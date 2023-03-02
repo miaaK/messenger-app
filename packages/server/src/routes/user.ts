@@ -12,6 +12,7 @@ router.get('/', async(req, res) => {
         const result = await User.findAndCountAll({
             where: {
                 id: {
+                     // @ts-ignore
                     [Op.ne]: req.session.userId // Operator.ne
                 }
             }
@@ -28,8 +29,11 @@ router.get('/', async(req, res) => {
 router.get('/me', async(req, res) => {
     try {
         res.json({
+            // @ts-ignore
            username: req.session.username,
+            // @ts-ignore
            userId: req.session.userId,
+            // @ts-ignore
            isLogged: req.session.isLogged
         });
     } catch (e) {
@@ -49,8 +53,11 @@ router.post('/login', async(req, res) => {
             username
         });
 
+         // @ts-ignore
         req.session.username = username;
+         // @ts-ignore
         req.session.userId = userId;
+         // @ts-ignore
         req.session.isLogged = true;
 
         req.session.save(() => {
@@ -68,6 +75,7 @@ router.post('/login', async(req, res) => {
 /* Logout */
 router.post('/logout', async(req, res) => {
     try {
+        // @ts-ignore
         delete req.session.user;
 
         req.session.save(() => {

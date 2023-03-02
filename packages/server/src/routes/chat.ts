@@ -7,7 +7,7 @@ import User from '../schemas/user';
 const router = Router();
 
 /* Chat list */
-router.get('/:roomId', async(req, res) => {
+router.get('/:roomId', async (req, res) => {
     try {
         const chat = await Chat.findAll({
             where: {
@@ -27,12 +27,17 @@ router.get('/:roomId', async(req, res) => {
 router.get('/:roomId', async(req, res) => {
     try {
         const chat = await Chat.create({
+            // @ts-ignore
             senderId: req.session.userId,
             content: req.body.content,
             roomId: req.params.roomId
         });
-      /* TODO:: socket */
-      res.json({ message:'OK' });
+      
+        const io = req.app.get('id');
+
+        io.of('/chat').to(req.params.roomId).emit('chat', chat);
+
+        res.json({ message:'OK' });
     } catch (e) {
 
     }
