@@ -1,0 +1,22 @@
+{
+  "name": "messenger_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miaaK/messenger_app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miaaK/messenger_app/issues"
+  },
+  "homepage": "https://github.com/miaaK/messenger_app#readme",
+  "dependencies": {
+    "lerna": "^6.5.1"
+  }
+}
