@@ -18,14 +18,16 @@ const socket = ( server: Server, app: Application, session: RequestHandler ) => 
 
     io.use(( socket: Socket, next: NextFunction ) => {
         const req = socket.request;
-
+        // @ts-ignore
         const res = socket.request.res || {};
-
+         // @ts-ignore
         session(req, res, next);
     });
 
-    chat.on('connection', async(req, res) => {
-        socket.toString('join', (roomId) => {
+    chat.on('connection', async(socket: Socket) => {
+        console.log('Connected to chat', socket.id);
+
+        socket.on('join', (roomId) => {
             socket.join(roomId);
         });
 
