@@ -1,18 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled/macro";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import Friend from "../components/FriendList/Friend";
 import TopNavigation from "../components/TopNavigation";
 import BottomNavigation from "../components/BottomNavigation";
 import Profile from "../components/Profile";
 import FriendList from "../components/FriendList";
-import Friend from "../components/FriendList/Friend";
-import { useMutation, useQuery} from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { fetchMyProfile, fetchUserList } from "../apis/userApi";
-import {AxiosError, AxiosResponse} from "axios";
-import {IProfile, IUser, IRoom} from "../types";
-import { fetchChatRoomList, makeChatRoom, MakeChatRoomRequest } from "../apis/roomApi";
-
+import { AxiosError, AxiosResponse } from "axios";
+import { IProfile, IUser, IRoom } from "../types";
+import {
+  fetchChatRoomList,
+  makeChatRoom,
+  MakeChatRoomRequest,
+} from "../apis/roomApi";
 
 const Base = styled.div`
   width: 100%;
@@ -35,52 +38,72 @@ const Summary = styled.small`
 const Friends: React.FC = () => {
   const navigate = useNavigate();
 
-  const {data: profileData} = useQuery<AxiosResponse<IProfile>, AxiosError>('fetchMyProfile', fetchMyProfile);
+  const { data: profileData } = useQuery<AxiosResponse<IProfile>, AxiosError>(
+    "fetchMyProfile",
+    fetchMyProfile
+  );
 
-  const {data: userData} = useQuery<AxiosResponse<{count: number; rows: Array<IUser>}>, AxiosError>("fetchUserList", fetchUserList)
-  
-  const {data: chatRoomListData} = useQuery<AxiosResponse<{count: number; rows: Array<IRoom>}>, AxiosError>("fetchChatRoomList", fetchChatRoomList)
+  const { data: userData } = useQuery<
+    AxiosResponse<{ count: number; rows: Array<IUser> }>,
+    AxiosError
+  >("fetchUserList", fetchUserList);
 
-const mutation = useMutation('makeChatRoom', (request: MakeChatRoomRequest) => 
-  makeChatRoom(request)
-);
+  const { data: chatRoomListData } = useQuery<
+    AxiosResponse<Array<IRoom>>,
+    AxiosError
+  >("fetchChatRoomList", fetchChatRoomList);
+
+  const mutation = useMutation("makeChatRoom", (request: MakeChatRoomRequest) =>
+    makeChatRoom(request)
+  );
 
   const handleChatRoomCreate = (receiverId: string) => {
-    const chatRoom = chatRoomListData?.data.find(chatRoom => chatRoom.receiverId === receiverId);
-    if(chatRoom) {
-      navigate('/rooms/${chatRoom.id}')
+    const chatRoom = chatRoomListData?.data.find(
+      (chatRoom) => chatRoom.receiverId === receiverId
+    );
+    if (chatRoom) {
+      navigate(`/rooms/${chatRoom.id}`);
     } else {
-      mutation.mutate({
-        receiverId
-      }, {
-        onSuccess: () => {
-          navigate('/room/${data.data.id}')
+      mutation.mutate(
+        {
+          receiverId,
+        },
+        {
+          onSuccess: (data) => {
+            navigate(`/rooms/${data.data.id}`);
+          },
         }
-    })
+      );
     }
-  
-  }
-  return <Base>
-    <Container>
-      <TopNavigation title="Contacts" />
+  };
 
-      {profileData && <Profile username={profileData.data.username}/>}
-      <Summary>Contacts: {userData.data.count}</Summary>
-      <FriendList>
-        {userData.data.rows.map(row => (
-            <Friend
-              key={row.id}
-              username={row.username}
-              thumbnailImg={row.thumbnailImgUrl}
-              onClick{() => handleChatRoomCreate(row.id)}
-            />
-          ))
-        }
-      </FriendList>
+  return (
+    <Base>
+      <Container>
+        <TopNavigation title="Contacts" />
 
-      <BottomNavigation />
-    </Container>
-  </Base>;
+        {profileData && <Profile username={profileData.data.username} />}
+
+        {userData && (
+          <>
+            <Summary>Contacts: {userData.data.count}</Summary>
+            <FriendList>
+              {userData.data.rows.map((row) => (
+                <Friend
+                  key={row.id}
+                  username={row.username}
+                  thumbnailImg={row.thumbnailImgUrl}
+                  onClick={() => handleChatRoomCreate(row.id)}
+                />
+              ))}
+            </FriendList>
+          </>
+        )}
+
+        <BottomNavigation />
+      </Container>
+    </Base>
+  );
 };
 
 export default Friends;
