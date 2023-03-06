@@ -8,7 +8,7 @@ const StyledLink = styled(Link)<{ color: string }>`
   color: ${({ color }) => color};
 `;
 
-const Base = styled.div`
+const Base = styled.li<{color: string}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -64,7 +64,7 @@ const SentAt = styled.time``;
 interface Props {
   id: number;
   username: string;
-  lastMessage: string;
+  lastMessage?: string;
   lastMessageSentAt?: string;
 }
 
