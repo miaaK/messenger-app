@@ -25,4 +25,7 @@ const Chat = sequelize.define('chat', {
     }
 });
 
+Chat.belongsTo(User, { foreignKey: "senderId" });
+Chat.belongsTo(Room, { foreignKey: "roomId" });
+
 export default Chat;

@@ -18,4 +18,6 @@ const Room = sequelize.define('room', {
     }
 });
 
+Room.belongsTo(User, { foreignKey: "receiverId" });
+
 export default Room;
