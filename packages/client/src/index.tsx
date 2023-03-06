@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import * as ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -10,22 +10,20 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ThemeProvider } from "@emotion/react";
 import { BrowserRouter } from "react-router-dom";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const rootEl = document.getElementById("root");
+
+const root = rootEl && ReactDOM.createRoot(rootEl);
 
 const client = new QueryClient();
 
-root.render(
-  <React.StrictMode>
+root?.render(
+  <BrowserRouter>
     <QueryClientProvider client={client}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </QueryClientProvider>
-  </React.StrictMode>
+  </BrowserRouter>,
 );
 
 // If you want to start measuring performance in your app, pass a function
