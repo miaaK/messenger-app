@@ -46,7 +46,7 @@ interface Props extends MessageType {
   receiverThumbnailImg?: string;
 }
 
-const ReceiveMessage: React.FC<Props> = ({
+const ReceivedMessage: React.FC<Props> = ({
   receiver,
   receiverThumbnailImg,
   content,
@@ -68,4 +68,4 @@ const ReceiveMessage: React.FC<Props> = ({
   );
 };
 
-export default ReceiveMessage;
+export default ReceivedMessage;
