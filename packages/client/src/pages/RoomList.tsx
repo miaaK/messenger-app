@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled/macro";
+
 import TopNavigation from "../components/TopNavigation";
 import BottomNavigation from "../components/BottomNavigation";
 import ChatRoomList from "../components/ChatRoomList";
+import ChatRoom from "../components/ChatRoomList/ChatRoom";
 import { useQuery } from "react-query";
 import { fetchChatRoomList } from "../apis/roomApi";
 import { AxiosError, AxiosResponse } from "axios";
 import { IRoom } from "../types";
-import ChatRoom from "../components/ChatRoomList/ChatRoom";
+
 
 const Base = styled.div`
   width: 100%;
